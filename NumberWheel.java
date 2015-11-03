@@ -11,7 +11,7 @@ import java.io.FileNotFoundException;
  *
  * java NumberWheel wheel1.txt false
  *
- * @author sps
+ * @author Egor Kozitski
  */
 public class NumberWheel {
 

@@ -3,7 +3,7 @@
  * It has a solver that can take a valid configuration and return a
  * solution, if one exists.
  *
- * @author sps
+ * @author Egor Kozitski
  */
 public class Backtracker {
     /*

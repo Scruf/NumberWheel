@@ -1,3 +1,8 @@
+/*
+*
+*
+* @author Egor Kozitski
+* */
 public class WheelConfig  extends java.lang.Object implements Configuration{
    static java.lang.String BRIDGE_STR;
    static int EMPTY_CELL;

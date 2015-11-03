@@ -7,7 +7,7 @@ import java.util.Collection;
  * solve a puzzle.  Therefore, all puzzles must implement this
  * interface.
  *
- * @author sps
+ * @author Egor Kozitski
  */
 public interface Configuration {
     /**
