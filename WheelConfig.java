@@ -18,6 +18,9 @@ public class WheelConfig  extends java.lang.Object implements Configuration{
    public static java.lang.String TRIAD_STR=".";
    public ArrayList<Integer> list;
    private int []configArray;
+   public Set<Integer> succesor ;
+   public int comparator= 0;
+   public int []bridges;
     //Constructs an ri number wheel puzzle from an input file whose format is: #_triads bridge1_value bridge2_value...A
    public WheelConfig(java.lang.String filename)throws java.io.FileNotFoundException{
         String content=" ";
@@ -31,40 +34,74 @@ public class WheelConfig  extends java.lang.Object implements Configuration{
         }catch(java.io.IOException file){
 
        }
+
        list = new ArrayList<Integer>();
        list.add(Integer.parseInt(contentList.get(0)));
        for(String s : contentList.get(1).split(" "))
         list.add(Integer.parseInt(s));
-      configArray = new int[TRIAD_CELL*list.get(0)];
+        bridges = new int [list.size()];
+      configArray = new int[3];
+
       Arrays.fill(configArray,EMPTY_CELL);
+
+      succesor = new HashSet<Integer>();
+      int n = (list.size()-1)*3;
+      comparator = (n*(n+1)/2)/3;
+}
+    public WheelConfig(int []arr){
+
+      configArray = arr.clone();
     }
     //Copy constructor. Takes an incoming config and makes a complete deep copy of its attributes.
     public WheelConfig(WheelConfig config){
 
         this.configArray = config.configArray.clone();
+
     }
     //Get the collection of successors from the current one
     public java.util.Collection<Configuration> getSuccessors(){
-       return null;
+        ArrayList<Configuration> successors = new ArrayList<Configuration>();
+        int index = 0 ;
+        for(int i=0;i<configArray.length;i++){
+          if(configArray[i]==0){
+            index=i;
+            break;
+          }
+        }
+        for(Object o : succesor){
+          int num =(int)o;
+          int []temp = configArray.clone();
+          temp[index]=num;
+          WheelConfig config = new WheelConfig(temp);
+          successors.add(config);
+        }
+        return successors;
     }
     //Is the current configuration valid or not
     public boolean isValid(){
-        return true;
+      int sum = 0;
+      for(int i=0;i<configArray.length;i++){
+        sum+=configArray[i];
+
+      }
+  return sum == comparator ? true : false;
     }
     //Is the current configuration a goal
     public boolean isGoal(){
-        return true;
+      return true;
+
     }
     @Override
     public java.lang.String toString(){
       String temp =" ";
       for(int i=0;i<configArray.length;i++){
-        if(i%3==0)
+        if(i%3==0 && i!=0)
           temp+=BRIDGE_STR;
-        temp += String.valueOf(configArray[i])+TRIAD_STR;
+        temp += String.valueOf(configArray[i]);
+        if(i<configArray.length)
+          temp+=TRIAD_STR;
 
       }
-      String str = temp.substring(2,temp.length()-1);
-      return str;
+    return temp.substring(0,temp.length()-1);
     }
 }
