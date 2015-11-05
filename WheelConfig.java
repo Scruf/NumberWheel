@@ -21,6 +21,7 @@ public class WheelConfig  extends java.lang.Object implements Configuration{
    public Set<Integer> succesor ;
    public int comparator= 0;
    public int []bridges;
+   public int numberOfCells ;
     //Constructs an ri number wheel puzzle from an input file whose format is: #_triads bridge1_value bridge2_value...A
    public WheelConfig(java.lang.String filename)throws java.io.FileNotFoundException{
         String content=" ";
@@ -41,7 +42,7 @@ public class WheelConfig  extends java.lang.Object implements Configuration{
         list.add(Integer.parseInt(s));
         bridges = new int [list.size()];
       configArray = new int[3];
-
+      numberOfCells = (list.size()-1)*3;
       Arrays.fill(configArray,EMPTY_CELL);
 
       succesor = new HashSet<Integer>();
@@ -79,19 +80,29 @@ public class WheelConfig  extends java.lang.Object implements Configuration{
     }
     //Is the current configuration valid or not
     public boolean isValid(){
-      int sum = 0;
-      for(int i=0;i<configArray.length;i++){
-        sum+=configArray[i];
-
-      }
-  return sum == comparator ? true : false;
-    }
-    //Is the current configuration a goal
+  		int index = 0;
+      for(int i = 0; i < configArray.length; i++){
+            if(configArray[i] == EMPTY_CELL){
+                if(i != 0)
+                    index = i - 1;
+                else
+                    index = 0;
+                break;
+            }
+        }
+  	if(index == 0)
+  		  return false;
+  	else if(index % 4 == 0)
+  			return configArray[index - 2] + configArray[index] == configArray[index - 1];
+  	else if(index % 4 == 2)
+  			return configArray[index] + configArray[index - 1] + configArray[index - 2] == comparator;
+  		else
+  			return true;
+  	}
     public boolean isGoal(){
       return true;
-
     }
-    @Override
+  @Override
     public java.lang.String toString(){
       String temp =" ";
       for(int i=0;i<configArray.length;i++){
